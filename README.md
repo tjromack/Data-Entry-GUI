@@ -1,2 +1,2 @@
 # Data-Entry-GUI
-Customizable flask app which allows users a simple GUI to input data fields into a database.
+Customizable flask app which displays a simple GUI: allowing users data input direct to postgresql database.
