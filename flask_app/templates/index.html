@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDGA Player Entry</title>
+    <style>
+        body {
+            background-color: #222;
+            color: #ddd;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            padding: 50px;
+        }
+
+        .database-info, .entry-section {
+            width: 48%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        td, th {
+            padding: 10px;
+            border: 1px solid #444;
+        }
+
+        input[type="text"], select, button {
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: rgb(46, 104, 46);
+            color: white;
+            cursor: pointer;
+        }
+
+        .data-display {
+            max-height: 400px;
+            overflow-y: scroll;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="database-info">
+            <h2>Database Info:</h2>
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Search by name...">
+                <button id="search-button">Search</button>
+            </div>
+            <div class="data-display">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>PDGA Number</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for player in players %}
+                        <tr>
+                            <td>{{ player[0] }}</td>
+                            <td>{{ player[1] }}</td>
+                            <td>{{ player[2] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="entry-section">
+            <h2>Enter Player Data:</h2>
+            <input type="text" id="first-name" placeholder="first name">
+            <input type="text" id="last-name" placeholder="last name">
+            <input type="text" id="pdga-number" placeholder="PDGA number">
+            <button id="submit">Enter</button>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Submission of player data
+        $("#submit").click(function() {
+    let firstName = $("#first-name").val();
+    let lastName = $("#last-name").val();
+    let pdgaNumber = $("#pdga-number").val();
+    
+    $.post('/add_player', { first_name: firstName, last_name: lastName, pdga_number: pdgaNumber }, function(response) {
+        if (response.status === 'error') {
+            alert(response.message);  // Show alert if there's an error.
+        } else {
+            location.reload();  // Reload only if player was added successfully.
+        }
+    });
+});
+
+        // Search functionality
+        $("#search-button").click(function() {
+            let search_term = $("#search-input").val();
+            $.post('/search', { search_term: search_term }, function(players) {
+                $('tbody').empty();
+                for (let player of players) {
+                    $('tbody').append(`
+                        <tr>
+                            <td>${player[0]}</td>
+                            <td>${player[1]}</td>
+                            <td>${player[2]}</td>
+                        </tr>
+                    `);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
