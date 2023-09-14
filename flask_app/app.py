@@ -5,9 +5,9 @@ app = Flask(__name__)
 
 # Set up database connection
 conn = psycopg2.connect(
-    dbname="pdga",
-    user="postgres",
-    password="trevorjames",
+    dbname="DBNAME",
+    user="USERNAME",
+    password="PASSWORD",
     host="localhost",
     port=5433
 )
