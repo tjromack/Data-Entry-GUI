@@ -32,3 +32,7 @@ Navigate to the project directory and run app.py.
 Open your browser and go to http://localhost:5000/ to access the GUI.
 
 Enter disc golf player data and monitor the list for real-time updates.
+
+#Future Scope
+
+The next iterations will focus on capturing more granular performance metrics of the players, primarily their placements in PDGA pro tour events.
